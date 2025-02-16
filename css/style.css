@@ -1034,3 +1034,24 @@ h3.my-profession
         max-width: 100%;
     }
 }
+
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 12px;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+}
+
+.form-control.error {
+    border-color: #ff4444;
+}
+
+.form-control.success {
+    border-color: var(--skin-color);
+}

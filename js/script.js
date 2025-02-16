@@ -79,3 +79,108 @@ const nav = document.querySelector(".nav"),
                     allSection[i].classList.toggle("open");
                 }
             }
+
+// Form Validation and Submission
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (validateForm()) {
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        // Submit form to Formspree
+        fetch(this.action, {
+            method: 'POST',
+            body: new FormData(this),
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Success message
+                alert('Thank you for your message! I will get back to you soon.');
+                this.reset();
+                resetFormStyles();
+            } else {
+                // Error message
+                throw new Error('Form submission failed');
+            }
+        })
+        .catch(error => {
+            alert('Oops! There was a problem submitting your form. Please try again.');
+        })
+        .finally(() => {
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    }
+});
+
+function validateForm() {
+    const form = document.getElementById('contactForm');
+    const name = form.querySelector('input[name="name"]');
+    const email = form.querySelector('input[name="email"]');
+    const subject = form.querySelector('input[name="subject"]');
+    const message = form.querySelector('textarea[name="message"]');
+    
+    let isValid = true;
+
+    // Reset previous errors
+    resetFormStyles();
+
+    // Name validation
+    if (name.value.trim().length < 2) {
+        showError(name, 'Name must be at least 2 characters');
+        isValid = false;
+    }
+
+    // Email validation
+    if (!isValidEmail(email.value)) {
+        showError(email, 'Please enter a valid email address');
+        isValid = false;
+    }
+
+    // Subject validation
+    if (subject.value.trim().length < 3) {
+        showError(subject, 'Subject must be at least 3 characters');
+        isValid = false;
+    }
+
+    // Message validation
+    if (message.value.trim().length < 10) {
+        showError(message, 'Message must be at least 10 characters');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function showError(input, message) {
+    const formGroup = input.parentElement;
+    const errorDisplay = formGroup.querySelector('.error-message');
+    input.classList.add('error');
+    errorDisplay.textContent = message;
+}
+
+function resetFormStyles() {
+    const form = document.getElementById('contactForm');
+    const inputs = form.querySelectorAll('.form-control');
+    const errors = form.querySelectorAll('.error-message');
+    
+    inputs.forEach(input => {
+        input.classList.remove('error', 'success');
+    });
+    
+    errors.forEach(error => {
+        error.textContent = '';
+    });
+}
