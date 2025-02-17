@@ -46,7 +46,7 @@ The contact form is powered by **Formspree**:
 3. Test the form to ensure it works.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [MIT license](LICENSE) file for details.
 
 ## Author
 - **Nyein Chan Aung** - [GitHub](https://github.com/Nyein-Changithub) - [Myportfolio](https://myportfolio-sbtj.onrender.com/)
